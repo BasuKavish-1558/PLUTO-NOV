@@ -22,7 +22,13 @@ const dayFormat = new Intl.DateTimeFormat(undefined, { dateStyle: 'full' })
  * GitHub-style month grid (CL-1, CL-2, CL-4): a day with a workout is filled,
  * a day without one is not. Binary shading, no intensity levels.
  */
-export function MonthCalendar({ workoutDays }: { workoutDays: ReadonlySet<LocalDate> }) {
+export function MonthCalendar({
+  workoutDays,
+  className,
+}: {
+  workoutDays: ReadonlySet<LocalDate>
+  className?: string
+}) {
   const today = toLocalDate(new Date())
   const [shown, setShown] = useState<YearMonth>(() => yearMonthOf(today))
   const [direction, setDirection] = useState(0)
@@ -40,7 +46,7 @@ export function MonthCalendar({ workoutDays }: { workoutDays: ReadonlySet<LocalD
   return (
     <section
       aria-label="Workout calendar"
-      className="bg-card w-full max-w-xl rounded-xl border p-4 sm:p-6"
+      className={cn('bg-card w-full max-w-xl rounded-xl border p-4 sm:p-6', className)}
     >
       <div className="mb-4 flex items-center justify-between gap-2">
         <h2 className="text-lg font-semibold tracking-tight" aria-live="polite">

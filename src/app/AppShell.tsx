@@ -18,7 +18,7 @@ export function AppShell() {
     <div className="flex min-h-dvh">
       <Sidebar />
       <main className="min-w-0 flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0">
-        <div className="mx-auto w-full max-w-3xl px-4 pt-[max(1.5rem,env(safe-area-inset-top))] pb-8 md:px-8 md:pt-10">
+        <div className="mx-auto w-full max-w-5xl px-4 pt-[max(1.5rem,env(safe-area-inset-top))] pb-8 md:px-8 md:pt-10">
           <AnimatedOutlet />
         </div>
       </main>
