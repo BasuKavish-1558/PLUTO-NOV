@@ -64,7 +64,8 @@ Code layout: pure logic in `src/domain/` (no React, Dexie or Supabase imports; e
 - Minimal: neutral palette, one accent colour, lots of whitespace, one font (Inter), `rounded-xl` cards, no clutter.
 - Light and dark themes via CSS variables in `src/styles/globals.css`; manual toggle; preference saved to `profiles.theme_pref`.
 - Motion is springy and short (150-300 ms): page transitions, animated protein ring, calendar cells that fill in, drag-to-reorder exercises (Motion `Reorder`), confetti plus a bounce on a new PR, subtle press feedback on buttons. Respect `prefers-reduced-motion` everywhere.
-- Mobile first, tap targets at least 44 px. Phones: bottom nav with Home, Workout, Calendar, Progress, More (Split, Nutrition, Profile). md and up: sidebar with all seven.
+- Mobile first, tap targets at least 44 px. Phones: bottom nav with Home, Workout, Calendar, Progress, More (Split, Nutrition); Profile is the avatar button at the top left of every page header. md and up: sidebar with all seven.
+- Home (phone and desktop) is just the month calendar marking workout days (`src/features/calendar/MonthCalendar.tsx`). No other cards on Home.
 - Logging a set takes 2 taps or fewer once the exercise is open (new sets are prefilled from the previous set or last session).
 
 ## Workflow

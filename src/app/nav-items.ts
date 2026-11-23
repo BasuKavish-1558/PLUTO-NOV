@@ -13,8 +13,8 @@ export type NavItem = {
   to: string
   label: string
   icon: LucideIcon
-  /** On phones: shown on the bottom bar, or tucked under "More". */
-  placement: 'bar' | 'more'
+  /** On phones: the bottom bar, the "More" sheet, or the header (Profile, top left). */
+  placement: 'bar' | 'more' | 'header'
 }
 
 // Order is the sidebar order on tablet and desktop.
@@ -25,7 +25,7 @@ export const navItems: readonly NavItem[] = [
   { to: '/progress', label: 'Progress', icon: ChartLine, placement: 'bar' },
   { to: '/split', label: 'Split', icon: ListChecks, placement: 'more' },
   { to: '/nutrition', label: 'Nutrition', icon: Drumstick, placement: 'more' },
-  { to: '/profile', label: 'Profile', icon: CircleUser, placement: 'more' },
+  { to: '/profile', label: 'Profile', icon: CircleUser, placement: 'header' },
 ]
 
 export const barItems = navItems.filter((i) => i.placement === 'bar')

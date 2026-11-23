@@ -9,7 +9,7 @@ export function CalendarPage() {
       <ComingSoon
         icon={CalendarDays}
         title="Calendar"
-        description="A month of training days at a glance, with your streak, day logs and photos. Arrives in Phase 1."
+        description="Your streak, days trained this month, and the full log and photos for any day. Arrives in Phase 1."
       />
     </>
   )

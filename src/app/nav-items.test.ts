@@ -9,9 +9,12 @@ import {
 } from './nav-items'
 
 describe('navigation', () => {
-  it('puts 4 items on the bar (plus More) and 3 under More', () => {
+  it('puts 4 items on the bar (plus More), 2 under More and Profile in the header', () => {
     expect(barItems.map((i) => i.label)).toEqual(['Home', 'Workout', 'Calendar', 'Progress'])
-    expect(moreItems.map((i) => i.label)).toEqual(['Split', 'Nutrition', 'Profile'])
+    expect(moreItems.map((i) => i.label)).toEqual(['Split', 'Nutrition'])
+    expect(navItems.filter((i) => i.placement === 'header').map((i) => i.label)).toEqual([
+      'Profile',
+    ])
     expect(navItems).toHaveLength(7)
   })
 
@@ -26,6 +29,7 @@ describe('navigation', () => {
     expect(isMoreActive('/nutrition')).toBe(true)
     expect(isMoreActive('/split/builder')).toBe(true)
     expect(isMoreActive('/calendar')).toBe(false)
+    expect(isMoreActive('/profile')).toBe(false)
   })
 
   it('derives a page title', () => {
