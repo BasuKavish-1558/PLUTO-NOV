@@ -23,15 +23,16 @@ Ask before adding any dependency outside this list, including small helpers. Pre
 ## Commands
 
 ```bash
-npm run dev          # Vite dev server
-npm run build        # type-check + production build
-npm run preview      # serve the production build (test PWA/offline here)
+npm run dev          # Vite dev server (http://localhost:5173)
+npm run build        # type-check + production build (also generates the service worker)
+npm run preview      # serve the production build on :4173 (test PWA/offline here)
 npm run typecheck    # tsc -b --noEmit
 npm run lint         # eslint .
+npm run format       # prettier --write .
 npm test             # vitest run
 npm run test:watch   # vitest
-npm run test:e2e     # playwright test
-npm run db:types     # supabase gen types typescript --local > src/data/database.types.ts
+npm run db:types     # regenerate src/data/database.types.ts from the linked Supabase project
+# npm run test:e2e   # Playwright, added in Phase 1
 ```
 
 Before every commit: `npm run typecheck && npm run lint && npm test`.
@@ -49,6 +50,12 @@ Before every commit: `npm run typecheck && npm run lint && npm test`.
 9. **Exercises.** Exercises used in logged workouts are archived, never hard-deleted. Seeded exercises are read-only.
 10. **Photos.** At most 3 per workout day (the DB enforces it). Compress client-side (canvas → webp) before upload. PR photos are separate and don't count toward the cap.
 11. **Auth.** Supabase Auth owns credentials. `profiles` is linked to `auth.users`; never add email or password columns.
+
+Tooling notes:
+
+- TypeScript is pinned to 6.0.x because typescript-eslint doesn't support 7 yet.
+- shadcn/ui components live in `src/components/ui/` and are ours to edit. Add new ones with `npx shadcn add <name>` (config in `components.json`).
+- `src/data/database.types.ts` is generated; never edit it by hand. Regenerate after every migration.
 
 Code layout: pure logic in `src/domain/` (no React, Dexie or Supabase imports; every function has Vitest tests). Data access in `src/data/` (`repos/` for entities, `sync/` for the engine). UI by feature in `src/features/<area>/`. shadcn components in `src/components/ui/`. Keep files small and single-purpose.
 
