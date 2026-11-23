@@ -1,5 +1,7 @@
 import { Link } from 'react-router'
 import { CalendarCheck, Flame, Scale, type LucideIcon } from 'lucide-react'
+import { formatNumber, toDisplayWeight } from '@/domain/units'
+import { useUnits } from '@/features/profile/profile-context'
 import { cn } from '@/lib/utils'
 
 function Tile({
@@ -49,6 +51,7 @@ export function StatTiles({
   bodyWeightKg: number | null
   className?: string
 }) {
+  const { weightUnit } = useUnits()
   return (
     <div className={cn('grid grid-cols-3 gap-3', className)}>
       <Tile
@@ -66,13 +69,14 @@ export function StatTiles({
         value={String(daysThisMonth)}
         unit={daysThisMonth === 1 ? 'day' : 'days'}
       />
-      {/* Phase 1 formats this in the user's unit (kg/lb) via src/domain/units.ts. */}
       <Tile
         to="/progress"
         icon={Scale}
         label="Weight"
-        value={bodyWeightKg === null ? '—' : bodyWeightKg.toFixed(1)}
-        unit={bodyWeightKg === null ? undefined : 'kg'}
+        value={
+          bodyWeightKg === null ? '—' : formatNumber(toDisplayWeight(bodyWeightKg, weightUnit))
+        }
+        unit={bodyWeightKg === null ? undefined : weightUnit}
       />
     </div>
   )
