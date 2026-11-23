@@ -2,6 +2,7 @@ import { MotionConfig } from 'motion/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider } from 'react-router'
 import { ThemeSync } from '@/features/theme/ThemeSync'
+import { PwaPrompt } from './PwaPrompt'
 import { router } from './router'
 
 const queryClient = new QueryClient({
@@ -18,6 +19,7 @@ export function App() {
       <MotionConfig reducedMotion="user">
         <ThemeSync />
         <RouterProvider router={router} />
+        <PwaPrompt />
       </MotionConfig>
     </QueryClientProvider>
   )
