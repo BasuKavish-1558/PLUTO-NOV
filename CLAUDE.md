@@ -23,15 +23,16 @@ Ask before adding any dependency outside this list, including small helpers. Pre
 ## Commands
 
 ```bash
-npm run dev          # Vite dev server
-npm run build        # type-check + production build
-npm run preview      # serve the production build (test PWA/offline here)
+npm run dev          # Vite dev server (http://localhost:5173)
+npm run build        # type-check + production build (also generates the service worker)
+npm run preview      # serve the production build on :4173 (test PWA/offline here)
 npm run typecheck    # tsc -b --noEmit
 npm run lint         # eslint .
+npm run format       # prettier --write .
 npm test             # vitest run
 npm run test:watch   # vitest
-npm run test:e2e     # playwright test
-npm run db:types     # supabase gen types typescript --local > src/data/database.types.ts
+npm run db:types     # regenerate src/data/database.types.ts from the linked Supabase project
+# npm run test:e2e   # Playwright, added in Phase 1
 ```
 
 Before every commit: `npm run typecheck && npm run lint && npm test`.
@@ -50,6 +51,12 @@ Before every commit: `npm run typecheck && npm run lint && npm test`.
 10. **Photos.** At most 3 per workout day (the DB enforces it). Compress client-side (canvas → webp) before upload. PR photos are separate and don't count toward the cap.
 11. **Auth.** Supabase Auth owns credentials. `profiles` is linked to `auth.users`; never add email or password columns.
 
+Tooling notes:
+
+- TypeScript is pinned to 6.0.x because typescript-eslint doesn't support 7 yet.
+- shadcn/ui components live in `src/components/ui/` and are ours to edit. Add new ones with `npx shadcn add <name>` (config in `components.json`).
+- `src/data/database.types.ts` is generated; never edit it by hand. Regenerate after every migration.
+
 Code layout: pure logic in `src/domain/` (no React, Dexie or Supabase imports; every function has Vitest tests). Data access in `src/data/` (`repos/` for entities, `sync/` for the engine). UI by feature in `src/features/<area>/`. shadcn components in `src/components/ui/`. Keep files small and single-purpose.
 
 ## Design direction
@@ -57,7 +64,8 @@ Code layout: pure logic in `src/domain/` (no React, Dexie or Supabase imports; e
 - Minimal: neutral palette, one accent colour, lots of whitespace, one font (Inter), `rounded-xl` cards, no clutter.
 - Light and dark themes via CSS variables in `src/styles/globals.css`; manual toggle; preference saved to `profiles.theme_pref`.
 - Motion is springy and short (150-300 ms): page transitions, animated protein ring, calendar cells that fill in, drag-to-reorder exercises (Motion `Reorder`), confetti plus a bounce on a new PR, subtle press feedback on buttons. Respect `prefers-reduced-motion` everywhere.
-- Mobile first, tap targets at least 44 px. Phones: bottom nav with Home, Workout, Calendar, Progress, More (Split, Nutrition, Profile). md and up: sidebar with all seven.
+- Mobile first, tap targets at least 44 px. Phones: bottom nav with Home, Workout, Calendar, Progress, More (Split, Nutrition); Profile is the avatar button at the top left of every page header. md and up: sidebar with all seven.
+- Home (phone and desktop) is an overview: today's workout with Start, streak / days this month / body weight tiles, protein ring, the month calendar marking workout days, and recent PRs. Its data comes from one hook, `src/features/home/use-home-summary.ts`.
 - Logging a set takes 2 taps or fewer once the exercise is open (new sets are prefilled from the previous set or last session).
 
 ## Workflow
