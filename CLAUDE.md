@@ -57,6 +57,8 @@ Tooling notes:
 - shadcn/ui components live in `src/components/ui/` and are ours to edit. Add new ones with `npx shadcn add <name>` (config in `components.json`).
 - `src/data/database.types.ts` is generated; never edit it by hand. Regenerate after every migration.
 
+Data flow: UI reads Dexie through `src/data/use-live-query.ts` (Dexie `liveQuery`), so it re-renders on local writes and on pulled changes. TanStack Query is for remote-only reads such as signed URLs. Repos in `src/data/repos/` write to Dexie and the outbox in one transaction (`upsert`, `patch` for partial profile updates, `delete`).
+
 Code layout: pure logic in `src/domain/` (no React, Dexie or Supabase imports; every function has Vitest tests). Data access in `src/data/` (`repos/` for entities, `sync/` for the engine). UI by feature in `src/features/<area>/`. shadcn components in `src/components/ui/`. Keep files small and single-purpose.
 
 ## Design direction

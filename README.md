@@ -15,7 +15,7 @@ npm install
 npm run dev
 ```
 
-The app runs without a backend in Phase 0. To connect Supabase (needed from Phase 1):
+The app needs a Supabase project (without one it shows a setup screen):
 
 1. Create a project at supabase.com.
 2. Copy `.env.example` to `.env.local` and fill in the project URL and anon (publishable) key from Project Settings > API.
@@ -26,6 +26,11 @@ The app runs without a backend in Phase 0. To connect Supabase (needed from Phas
    npx supabase db push
    npm run db:types
    ```
+4. Deploy the account-deletion function:
+   ```bash
+   npx supabase functions deploy delete-account
+   ```
+5. In Authentication > URL Configuration, set the Site URL to where the app runs (e.g. `http://localhost:5173`) and add `<site>/auth/update-password` to the redirect URLs so password-reset links work.
 
 ## Scripts
 

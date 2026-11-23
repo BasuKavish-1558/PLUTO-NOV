@@ -6,7 +6,14 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 export default defineConfig([
-  globalIgnores(['dist', 'dev-dist', 'coverage', 'src/data/database.types.ts']),
+  // supabase/functions runs on Deno and is checked by `deno check`, not this config.
+  globalIgnores([
+    'dist',
+    'dev-dist',
+    'coverage',
+    'src/data/database.types.ts',
+    'supabase/functions',
+  ]),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
