@@ -1,12 +1,15 @@
 import { Link } from 'react-router'
 import { ChevronRight, Trophy } from 'lucide-react'
 import { fromLocalDate } from '@/domain/local-date'
+import { formatWeight } from '@/domain/units'
+import { useUnits } from '@/features/profile/profile-context'
 import type { RecentPr } from './use-home-summary'
 
 const shortDate = new Intl.DateTimeFormat(undefined, { day: 'numeric', month: 'short' })
 
 /** The latest manually logged PRs. */
 export function RecentPrsCard({ prs }: { prs: RecentPr[] }) {
+  const { weightUnit } = useUnits()
   return (
     <section className="bg-card rounded-xl border p-5">
       <div className="flex items-center justify-between">
@@ -31,7 +34,8 @@ export function RecentPrsCard({ prs }: { prs: RecentPr[] }) {
             <li key={pr.id} className="flex items-center justify-between gap-3 py-2.5 text-sm">
               <span className="truncate font-medium">{pr.exerciseName}</span>
               <span className="text-muted-foreground shrink-0 tabular-nums">
-                {pr.weightKg} kg × {pr.reps} · {shortDate.format(fromLocalDate(pr.loggedOn))}
+                {formatWeight(pr.weightKg, weightUnit)} × {pr.reps} ·{' '}
+                {shortDate.format(fromLocalDate(pr.loggedOn))}
               </span>
             </li>
           ))}

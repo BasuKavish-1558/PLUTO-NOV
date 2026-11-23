@@ -1,5 +1,7 @@
+import { latestWeightKg } from '@/domain/body-vitals'
 import { toLocalDate, yearMonthOf, type LocalDate } from '@/domain/local-date'
 import { currentStreak, daysTrainedInMonth, streakNeedsToday } from '@/domain/streak'
+import { useBodyVitals } from '@/features/body-vitals/use-body-vitals'
 
 export type TodayPlan =
   | { kind: 'no-split' }
@@ -27,13 +29,14 @@ export type HomeSummary = {
 }
 
 /**
- * Everything Home shows, in one place. Phase 1 reads these from Dexie
- * (workouts, active split, protein entries + goal, body vitals); Phase 2 adds PRs.
- * Until then the inputs are empty and the derived values follow from them.
+ * Everything Home shows, in one place, read live from Dexie. Body weight is real
+ * since Phase 1a; workouts, the active split and protein arrive in Phase 1b-1d,
+ * and PRs in Phase 2. Until then those inputs are empty.
  */
 export function useHomeSummary(): HomeSummary {
   const today = toLocalDate(new Date())
   const workoutDays: ReadonlySet<LocalDate> = new Set()
+  const vitals = useBodyVitals()
 
   return {
     today,
@@ -43,7 +46,7 @@ export function useHomeSummary(): HomeSummary {
     daysThisMonth: daysTrainedInMonth(workoutDays, yearMonthOf(today)),
     todayPlan: { kind: 'no-split' },
     protein: { consumedG: 0, goalG: null },
-    latestBodyWeightKg: null,
+    latestBodyWeightKg: latestWeightKg(vitals),
     recentPrs: [],
   }
 }
